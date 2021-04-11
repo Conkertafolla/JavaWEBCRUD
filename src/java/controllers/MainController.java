@@ -35,4 +35,49 @@ public class MainController {
         return modelAndView;
     }
     
+    
+    @RequestMapping(value = "addUser.htm", method = RequestMethod.GET)
+    public ModelAndView showaddUser(){
+        modelAndView.addObject(new User());
+        modelAndView.setViewName("addUser");
+        return modelAndView;
+    }
+    
+    
+    @RequestMapping(value = "addUser.htm", method = RequestMethod.POST)
+    public ModelAndView insertUser(User user){
+        String sql = "INSERT INTO user (name, email,user_name,password) VALUES  (?,?,?,?)";
+        this.jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserName(), user.getPassword());
+        modelAndView.addObject("action", "addUser");
+        return new ModelAndView("redirect:/index.htm");
+    }
+    
+    
+    @RequestMapping(value="editUser.htm", method = RequestMethod.GET)
+    public ModelAndView showEditUser(HttpServletRequest request){
+        id = Integer.parseInt(request.getParameter("id"));
+        String sql = "select * from user where id = " + id;
+        data = this.jdbcTemplate.queryForList(sql);
+        modelAndView.addObject("lista", data);
+        modelAndView.setViewName("editUser");
+        return modelAndView;
+    }
+    
+    
+    @RequestMapping(value = "editUser.htm", method = RequestMethod.POST)
+    public ModelAndView editUser(User user){
+        String sql = "update user set name=?, email=? where id=?";
+        this.jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getId());
+        return new ModelAndView("redirect:/index.htm");
+    }
+    
+    @RequestMapping(value = "deleteUser.htm", method = RequestMethod.GET)
+    public ModelAndView deleteUser(HttpServletRequest request){
+        id = Integer.parseInt(request.getParameter("id"));
+        String sql = "delete from user where id = " + id;
+        this.jdbcTemplate.update(sql);
+        return new ModelAndView("redirect:/index.htm");
+    }
+    
+    
 }

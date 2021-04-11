@@ -21,6 +21,9 @@
             <props>
                 <!-- Referencias -->
                 <prop key="index.htm">MainController</prop>
+                <prop key="addUser.htm">MainController</prop>
+                <prop key="editUser.htm">MainController</prop>
+                <prop key="deleteUser.htm">MainController</prop>
             </props>
         </property>
     </bean>
